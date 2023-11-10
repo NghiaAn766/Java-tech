@@ -1,0 +1,141 @@
+** NOTE **
+- Góp ý với Hiếu là chuyển erd với rs thành tiếng anh á, t có để tên ở mỗi trường có gì Hiếu tham khảo nhen.
+
+1. Sân bay (airport):
+- Mã sân bay (airport_id) (PK)
+- Tên sân bay (airport_name)
+- Địa chỉ (Thuộc tính đa trị):
+	+ Quận / Huyện (district)
+	+ Tỉnh / Thành phố (province_city)
+	+ Quốc gia (nếu đề tài là quốc tế) (country)
+
+// 1 sân bay có nhiều đường băng, mỗi đường băng chỉ sử dụng cho duy nhất một chuyến bay (đi / về).
+
+// Gate
+// Thêm cái table đường băng
+2. Đường băng (runway):
+- Mã sân bay (airport_id) (FK)
+- Mã đường băng (runway_id) (PK)
+- Occupied (occupied)
+
+// Thừa thông tin SanBayDi, SanBayDen và thay đổi quan hệ many-to-many thành one-to-many (Sân bay 1-n Chuyến bay)
+
+3. Chuyến Bay (flight):
+- Mã chuyến bay (flight_id) (PK)
+- Số hiệu chuyến bay (flight_name)
+// thay ngày thành thời gian vì có những chuyến bay di chuyển dưới 24h (phút, giờ, ngày, tháng, năm)
+- Thời gian khởi hành (hh:mm - dd/mm/yyyy) (departure_time)
+- Thời gian đến (hh:mm - dd/mm//yyyy) (arrival_time)
+- Mã sân bay đi (departure_airport_id) (FK)
+- Mã sân bay đến (arrival_airport_id) (FK)
+
+** Chỉnh sửa code sql:
+-- Tạo bảng Airports để lưu thông tin về sân bay
+CREATE TABLE Airports (
+    airport_id VARCHAR(10) PRIMARY KEY,
+    airport_name VARCHAR(255),
+    district VARCHAR(255),
+    province_city VARCHAR(255),
+    country VARCHAR(255)
+);
+
+-- Tạo bảng Flights để lưu thông tin về chuyến bay với trường departure_airport_id và arrival_airport_id
+
+// Trong bảng này có thể cho flight_number là khóa chính nếu muốn.
+CREATE TABLE Flights (
+    flight_id INT AUTO_INCREMENT PRIMARY KEY,
+    flight_number VARCHAR(10), // Số hiệu chuyến bay là một dãy kết hợp giữa các chữ cái và chữ số. Trong đó hai chữ cái đầu tiên là mã hãng hàng không (ví dụ: AA – American Airlines, VN – Vietnam Airlines, VJ – Vietjet Air…). Số hiệu chuyến bay trên vé giúp bạn kiểm tra được các thông tin về cửa ra hoặc trạng thái chuyến bay.
+    departure_time DATETIME,
+    arrival_time DATETIME,
+    departure_airport_id INT,
+    arrival_airport_id INT,
+    FOREIGN KEY (departure_airport_id) REFERENCES Airports(airport_id),
+    FOREIGN KEY (arrival_airport_id) REFERENCES Airports(airport_id)
+);
+
+** Ví dụ:
+- Có 2 sân bay trong csdl là:
+	INSERT INTO Airports VALUES ("NB", "Nội Bài", "Sóc Sơn", "Hà Nội", "Việt Nam")
+	INSERT INTO Airports VALUES ("TSN", "Tân Sơn Nhất", "Tân Bình", "TPHCM", "Việt Nam")
+
+- Có 2 chuyến bay trong csdl là:
+
+	INSERT INTO Flights (flight_id, flight_number, departure_date, arrival_date, departure_airport_id, arrival_airport_id)
+VALUES
+    (1, 'VJ123', '2023-09-25 7:00:00', '2023-09-25 9:30:00', "NB", "TSN"),
+    (2, 'AA456', '2023-09-26 17:30:00', '2023-09-26 22:00:00', "TSN", "NB");
+
+Như vậy có thể hiểu được là chuyến bay có id = 1, số hiệu là VJ123, thời gian khởi hành là 2023-09-25 7:00:00, thời gian kết thúc là 2023-09-25 9:30:00, đi từ sân bay Nội Bài tới sân bay Tân Sơn Nhất.
+
+4. Máy bay (plane)
+- Mã máy bay (plane_id) (PK)
+- Tên máy bay (plane_name)
+- Số ghế (capacity)
+
+5. flight_plane
+- plane_id (FK)
+- flight_id (FK)
+
+// Table tạo ra để thực hiện chức năng đặt ghế cho khách
+6. Chỗ ngồi (seats):
+- Mã chỗ (seat_id) (PK)
+- Số ghế (seat_number)
+- Trạng thái (status)
+- Mã máy bay (plane_id) (FK)
+- Mã hóa đơn (invoice_id) (FK)
+
+7. Hóa đơn (invoice)
+- Mã hóa đơn (invoice_id) (PK)
+- Ngày lập (invoice_date)
+- Giá tiền (price)
+
+// Sửa khuyến mãi thành ưu đãi
+// Thay đổi quan hệ CHỖ NGỒI với ưu đãi thành quan hệ ưu đãi với VÉ
+8. Ưu đãi (offer)
+- Mã ưu đãi (offer_id) (PK)
+- Tên ưu đãi (offer_name)
+- Mô tả (offer_detail)
+- Ngày bắt đầu (offer_start_date)
+- Ngày kết thúc (offer_end_date)
+
+9. Vé (ticket)
+- Mã vé (ticket_id) (PK)
+- Tên vé (ticket_name)
+- Loại vé (ticket_type)
+- Mô tả (ticket_detail)
+- Mã ưu đãi (offer_id) (FK)
+- Mã chỗ (seat_id) (FK)
+
+10. Phiếu đặt chỗ (reservation_confirmation):
+- Mã phiếu (form_id) (PK)
+- Trạng thái xác nhận (reservation_status)
+- Số xác nhận đặt chỗ (reservation_number)
+- Mã vé (ticker_id) (FK)
+
+11. Dịch vụ bay (flight_services)
+- Mã dịch vụ (service_code) (PK)
+- Tên dịch vụ (service_name)
+- Mô tả (service_detail)
+- Giá (service_price)
+- Mã phiếu (form_id) (FK)
+
+12. Booking (booking)
+- Mã khách hàng (passenger_id) (FK)
+- Mã phiếu (form_id) (FK) 
+- Ngày đặt (booking_date)
+
+13. Khách hàng (passenger)
+- Mã khách hàng (passenger_id) (PK)
+- Tên khách hàng (passenger_name)
+- Số điện thoại (passenger_phone)
+- Giới tính (passenger_sex)
+- Ngày sinh (passenger_dob)
+- Email (passenger_email)
+
+// Này t góp ý thêm vô tại search thấy nó cũng có trong quá trình đặt vé máy bay (^_^)
+14. Hành lý (baggage)
+- Mã hành lý (baggage_id) (PK)
+- Trọng lượng hành lý (baggage_weight)
+- Số lượng hành lý (number_of_bags)
+- Loại hành lý (baggage_type)
+- Mã khách hàng (passenger_id) (FK)

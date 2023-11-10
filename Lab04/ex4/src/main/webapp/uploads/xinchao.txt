@@ -1,0 +1,136 @@
+-- Tạo cơ sở dữ liệu
+CREATE DATABASE IF NOT EXISTS airplane_reservation_system;
+
+-- Sử dụng cơ sở dữ liệu
+USE airplane_reservation_system;
+
+-- Bảng Sân bay
+CREATE TABLE airport (
+    airport_id VARCHAR(11) PRIMARY KEY,
+    airport_name VARCHAR(255) NOT NULL,
+    district VARCHAR(255),
+    province_city VARCHAR(255),
+    country VARCHAR(255)
+);
+
+-- Bảng Đường băng
+CREATE TABLE runway (
+    runway_id VARCHAR(11) PRIMARY KEY,
+    airport_id VARCHAR(11),
+    occupied TINYINT, // 0 hoặc 1
+    FOREIGN KEY (airport_id) REFERENCES airport(airport_id)
+);
+
+-- Bảng Chuyến bay
+CREATE TABLE flight (
+    flight_id VARCHAR(11) PRIMARY KEY,
+    flight_name VARCHAR(255) NOT NULL,
+    departure_time DATETIME NOT NULL,
+    arrival_time DATETIME NOT NULL,
+    departure_airport_id VARCHAR(11),
+    arrival_airport_id VARCHAR(11),
+    FOREIGN KEY (departure_airport_id) REFERENCES airport(airport_id),
+    FOREIGN KEY (arrival_airport_id) REFERENCES airport(airport_id)
+);
+
+-- Bảng Máy bay
+CREATE TABLE plane (
+    plane_id VARCHAR(11) PRIMARY KEY,
+    plane_name VARCHAR(255) NOT NULL,
+    capacity INT
+);
+
+-- Bảng flight_plane (Liên kết giữa Chuyến bay và Máy bay)
+CREATE TABLE flight_plane (
+    plane_id VARCHAR(11),
+    flight_id VARCHAR(11),
+    FOREIGN KEY (plane_id) REFERENCES plane(plane_id),
+    FOREIGN KEY (flight_id) REFERENCES flight(flight_id)
+);
+
+-- Bảng Chỗ ngồi
+CREATE TABLE seats (
+    seat_id VARCHAR(11) PRIMARY KEY,
+    seat_number VARCHAR(10) NOT NULL,
+    status VARCHAR(255),
+    plane_id VARCHAR(11),
+    invoice_id INT,
+    FOREIGN KEY (plane_id) REFERENCES plane(plane_id),
+    FOREIGN KEY (invoice_id) REFERENCES invoice(invoice_id)
+);
+
+-- Bảng Hóa đơn
+CREATE TABLE invoice (
+    invoice_id VARCHAR(11) PRIMARY KEY,
+    invoice_date DATE,
+    price DECIMAL(10, 2)
+);
+
+-- Bảng Ưu đãi
+CREATE TABLE offer (
+    offer_id VARCHAR(11) PRIMARY KEY,
+    offer_name VARCHAR(255) NOT NULL,
+    offer_detail TEXT,
+    offer_start_date DATE,
+    offer_end_date DATE
+);
+
+-- Bảng Vé
+CREATE TABLE ticket (
+    ticket_id VARCHAR(11) PRIMARY KEY,
+    ticket_name VARCHAR(255) NOT NULL,
+    ticket_type VARCHAR(255),
+    ticket_detail TEXT,
+    offer_id VARCHAR(11),
+    seat_id VARCHAR(11),
+    FOREIGN KEY (offer_id) REFERENCES offer(offer_id),
+    FOREIGN KEY (seat_id) REFERENCES seats(seat_id)
+);
+
+-- Bảng Phiếu đặt chỗ
+CREATE TABLE reservation_confirmation (
+    form_id VARCHAR(11) PRIMARY KEY,
+    reservation_status VARCHAR(255),
+    reservation_number VARCHAR(255),
+    ticket_id VARCHAR(11),
+    FOREIGN KEY (ticket_id) REFERENCES ticket(ticket_id)
+);
+
+-- Bảng Dịch vụ bay
+CREATE TABLE flight_services (
+    service_code VARCHAR(11) PRIMARY KEY,
+    service_name VARCHAR(255) NOT NULL,
+    service_detail TEXT,
+    service_price DECIMAL(10, 2),
+    form_id VARCHAR(11),
+    FOREIGN KEY (form_id) REFERENCES reservation_confirmation(form_id)
+);
+
+-- Bảng Booking
+CREATE TABLE booking (
+    passenger_id VARCHAR(11),
+    form_id VARCHAR(11),
+    booking_date DATE,
+    FOREIGN KEY (passenger_id) REFERENCES passenger(passenger_id),
+    FOREIGN KEY (form_id) REFERENCES reservation_confirmation(form_id)
+);
+
+-- Bảng Khách hàng
+CREATE TABLE passenger (
+    passenger_id VARCHAR(11) PRIMARY KEY,
+    passenger_name VARCHAR(255) NOT NULL,
+    passenger_phone VARCHAR(20),
+    passenger_sex TINYINT, // 0 hoặc 1 hoặc 2
+    passenger_dob DATE,
+    passenger_email VARCHAR(255)
+);
+
+-- Bảng Hành lý
+CREATE TABLE baggage (
+    baggage_id VARCHAR(11) PRIMARY KEY,
+    baggage_weight DECIMAL(10, 2),
+    number_of_bags INT,
+    baggage_type VARCHAR(255),
+    passenger_id VARCHAR(11),
+    FOREIGN KEY (passenger_id) REFERENCES passenger(passenger_id)
+);

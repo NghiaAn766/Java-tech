@@ -1,0 +1,87 @@
+- App nghe nhạc
+- App siêu thị như Chopp
+- App bán hàng điện tử
+- App du lịch như Mytour, VNtrip, Klook, Trivago
+- App đặt vé máy bay như Traveloka 
+
+
+** App dành cho sinh viên:
+- Nguồn: 
+	+ <https://www.ueh.edu.vn/cuoc-song-ueh/tin-tuc/ueh-trien-khai-ung-dung-ueh-student-va-the-sinh-vien-dien-tu-tren-dien-thoai-thong-minh-danh-cho-nguoi-hoc-57326>
+	+ <https://apkpure.com/vn/qua%CC%89n-ly%CC%81-sinh-vi%C3%AAn/com.son.admin.assignment>
+	+ <https://topcode.vn/source-code/u%CC%81ng-du%CC%A3ng-qua%CC%89n-ly%CC%81-sinh-vien-ngon-ngu%CC%83-java-csdl-sqlite-do%CC%80-a%CC%81n-android-studio-45744.htm>
+	+ App VneID: https://play.google.com/store/apps/details?id=com.vnid&hl=vi
+- Mục lục trang ứng dụng:
+	1. Trang chủ:
+		- Avatar, Họ Tên, MSSV
+		- Thời khóa biểu: Vì trình độ còn ngu nên chỉ làm ở thời khóa biểu học kỳ hiện tại
+			+ Dùng gg
+		- Lịch thi: Tương tự như thời khóa biểu
+		- Học phí: Tương tự Lịch thi
+		- Điểm danh: Tương tự Học phí
+	2. Học tập:
+		- Thẻ sinh viên: (Vào VNeID -> Ví giấy tờ -> Phần thông tin công dân là phần thẻ sinh viên)
+			+ Mô tả: Hình ảnh kết hợp button khi bấm vào sẽ chuyển trang hiện các thông tin:
+				. Avatar
+				. Họ tên
+				. MSSV
+				. Giới tính
+				. Ngày sinh
+				. Số điện thoại
+				. Khoa
+				. Ngành
+				. Lớp
+				. Khóa
+				. Nơi thường trú
+			+ Có nút back để quay lại trang học tập
+		- Các chức năng: (Vào VNeID -> Ví giấy tờ -> Phần mà để các chức năng như Tích hợp thông tin, Xuất trình giấy tờ ... sẽ thay thế thành các chức năng sau đây, giao diện vẫn giữ nguyên)
+			+ Nộp đơn
+			+ Chứng nhận sinh viên
+			+ Đăng ký KTX
+			+ Eleanring
+			+ Kết quả học tập
+			+ Kết quả đánh giá điểm rèn luyện
+	3. Thông báo:
+		- Mô tả: Nó sẽ hiện danh sách tất cả thông báo tuy nhiên có bộ lọc để xem riêng lẻ theo chuẩn sau:
+			+ Xử lý học vụ
+			+ Thông báo khoa:
+				. Khoa đang học
+				. Khoa tài chính ngân hàng
+				. Creative Language Center
+				. Trung tâm tin học
+			+ Thông báo mới
+			+ Thông báo quan trọng
+			+ Có option đánh dấu đã đọc/ chưa đọc
+		- Note: Mục này làm cho có giao diện không đào sâu
+	4. Tài khoản: (Vào VNeID -> Cá nhân -> Giao diện tương tự chỉ thay đổi thành các chức năng sau)
+		- Đổi mật khẩu
+		- Đổi mã PIN
+		- Tùy chọn chức năng:
+			+ Cài đặt thông báo
+			+ Cho phép sử dụng camera, mic
+			
+		- Ứng dụng:
+			+ Điều khoản sử dụng và dịch vụ
+			+ Chính sách quyền riêng tư
+			+ Phiên bản
+		- Hỗ trợ:
+			+ Hotline
+		- Đăng xuất
+
+** App dành cho công nhân:
+- Nguồn: 
+	+ companyIQ: https://play.google.com/store/apps/details?id=com.kofsoft.ciq&hl=vi
+- Mục lục trang ứng dụng:
+	1. New:
+		- Search
+		- Châm ngôn của công ty (chữ chạy)
+		- Danh sách các thông báo
+	2. Menu:
+		- Trên đầu là ảnh chạy về công ty (như top sản phẩm bên web)
+		- Employee Portal:
+			+ Personal Info:
+				.
+			+ Co.info:
+			+ News:
+			+ Exerience:
+		- Employee Voice:
